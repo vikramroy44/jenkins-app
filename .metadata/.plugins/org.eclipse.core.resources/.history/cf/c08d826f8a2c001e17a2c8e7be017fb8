@@ -1,0 +1,24 @@
+package linkedList;
+
+import java.util.LinkedList;
+
+public class LinkedListDemo {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		LinkedList<String> lList = new LinkedList<>();
+		lList.add("C");
+		lList.add("Java");
+		lList.add("Python");
+		lList.add("C++");
+		lList.add("Java");
+		
+		System.out.println(lList);
+		lList.add(0, null);
+		lList.addFirst("Vikram");
+		System.out.println(lList);
+
+	}
+
+}
