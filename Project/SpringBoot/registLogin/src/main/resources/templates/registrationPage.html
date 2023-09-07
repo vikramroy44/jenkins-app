@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	
+	<form th:action="@{/register}" method="post" th:object="${User}">
+	<h2>You are on Registration Page</h2>
+	
+	
+	Enter First Name: <input type="text"  id="firstName" name="firstName" /><br>
+	<br>
+	
+	Enter Last Name: <input type="text"  id="lastName"  name="lastName"/><br>
+	<br>
+	    Enter Email: <input  type=" email" id="emailAddress"  name="email"  /><br>
+	<br>
+	 Enter Password: <input type="password" id="password" name="password"  />
+	<br>
+	
+    </form>
+</body>
+</html>
