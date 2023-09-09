@@ -1,13 +1,15 @@
-package UserServices;
+package clientTest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
+
 @SpringBootApplication
-public class UserServiceApplication {
+public class TestClientApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(UserServiceApplication.class, args);
+		SpringApplication.run(TestClientApplication.class, args);
 	}
 
 }
