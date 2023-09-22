@@ -14,7 +14,7 @@ spring:
     show-sql: true
     
   application:
-    name: HOTEL-Service
+    name: Hotel-Service
 eureka:
   instance:
     prefer-ip-address: true

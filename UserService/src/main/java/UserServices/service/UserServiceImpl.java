@@ -7,18 +7,18 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.apache.logging.log4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import UserServices.FeignClient.HotelInterface;
+import UserServices.FeignClient.RatingInterface;
 import UserServices.entity.Hotel;
 import UserServices.entity.Rating;
 import UserServices.entity.User;
 import UserServices.exceptions.UserNotFoundException;
 import UserServices.repository.UserRepository;
-import UserServices.service.UserService;
 
 
 @Service
@@ -28,10 +28,18 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	HotelInterface hotelInterface;
+	
+	@Autowired
+	RatingInterface ratingInterface;
+	
 	//@Autowired
 	 RestTemplate restTemplate = new RestTemplate();
+
+
 	
-	private org.slf4j.Logger logger =LoggerFactory.getLogger(UserServiceImpl.class);
+	//private org.slf4j.Logger logger =LoggerFactory.getLogger(UserServiceImpl.class);
 	 
 	
 
@@ -60,13 +68,17 @@ public class UserServiceImpl implements UserService {
 	//ArrayList<Rating> ratingUser=restTemplate.getForObject("http://localhost:8083/user/af1359f5-0a81-410c-8962-ea1975a3d0f0", ArrayList.class);
 	try {
 		Rating[] ratingUser = restTemplate.getForObject("http://localhost:8084/rating/user/"+user.getUserId(), Rating[].class);
-		logger.info("{}", ratingUser);
-		//List<Rating> ratingList = Arrays.stream(ratingUser).toList();
-		List<Rating> ratingList = Arrays.asList(ratingUser);
-		List<Rating > ratingHotel=ratingList.stream().map(rating-> {
-		Hotel forObject = restTemplate.getForObject("http://localhost:8082/hotel/"+ rating.getHotelId(), Hotel.class);
-		logger.info("{}", forObject);
-		rating.setHotel(forObject);
+		//logger.info("{}", ratingUser);
+		List<Rating> ratingList = Arrays.stream(ratingUser).toList();
+		//ResponseEntity<Rating> ratingUser = ratingInterface.getRating(user.getUserId());
+		//List<Rating> ratingList = Arrays.asList(ratingUser);
+		//Rating ratingList = ratingUser.getBody();
+		//List<Rating> asList = Arrays.asList(ratingUser.getBody());
+ 		List<Rating > ratingHotel=ratingList.stream().map(rating-> {
+		//Hotel forObject = restTemplate.getForObject("http://localhost:8082/hotel/"+ rating.getHotelId(), Hotel.class);
+			ResponseEntity<Hotel> hotel = hotelInterface.getHotel(rating.getHotelId());
+		//logger.info("{}", forObject);
+		rating.setHotel(hotel.getBody());
 		return rating;
 		}
 		).collect(Collectors.toList());
@@ -78,8 +90,10 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}catch (Exception e) {
 		//System.out.println("Exception Found : VIKRAM " + e);
-		return user;
+		e.printStackTrace();
 	}
+		return user;
+	
 		// TODO: handle exception
 	}
 

@@ -41,6 +41,7 @@ public class User {
 	
 	@Transient
 	private List<Rating> ratings = new ArrayList();
+	//private List<Rating> ratings;
 	
 	
 	
