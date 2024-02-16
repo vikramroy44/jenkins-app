@@ -3,6 +3,10 @@ package com.handsonrestapi;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.naming.InvalidNameException;
+
+import org.apache.log4j.Logger;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,16 +14,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.handsonrestapi.GlobalExcecptionHandler.InvalidPriceException;
+
 import ch.qos.logback.core.status.StatusListenerAsList;
 
 @RestController
 public class ProductControler {
-	
+	private static Logger logger = Logger.getLogger(ProductControler.class);
 	@PostMapping("/saveproduct/")
-	private String saveProduct(@RequestBody Product p) {
-		// Logic to insert in data base
+	private String saveProduct(@RequestBody Product p) throws InvalidNameException, InvalidPriceException {
+		// Logic to insert in data base6
+		if( p.getName().equalsIgnoreCase("")) {
+			//System.out.println(p.getName());
+			logger.info(p);
+			throw new InvalidNameException("Name is Required");
+		}else if(p.getPrice()<5.00) {
+			throw new InvalidPriceException("Not a valid Price");
+		}
+		else {
 		System.out.println(p);
+		}
 		return "Product Saved";
+		//p.getName().isEmpty()|| p.getName().isBlank() ||
 	}
 	
 	@GetMapping("/getproduct/{id}")
@@ -50,4 +66,6 @@ public class ProductControler {
 		return list;
 		
 	}
+	
+	
 }
